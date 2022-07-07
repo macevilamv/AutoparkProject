@@ -4,13 +4,13 @@ public class Main {
     public static void main(String[] args) {
         Vehicle [] vehicles = initVehicleArray();
 
-        vehicleUtil.print(vehicles);
-        vehicleUtil.sort(vehicles);
-        vehicleUtil.print(vehicles);
-        vehicleUtil.findMileageExtrema(vehicles);
+        VehicleUtil.print(vehicles);
+        VehicleUtil.sort(vehicles);
+        VehicleUtil.print(vehicles);
+        VehicleUtil.findMileageExtrema(vehicles);
     }
 
-   private static class vehicleUtil {
+   private static class VehicleUtil {
         private static void print(Vehicle[] vehicles) {
             for (Vehicle vehicle : vehicles) {
                 System.out.println(vehicle);

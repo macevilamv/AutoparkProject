@@ -78,7 +78,11 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     public void setType(VehicleType type) {
-        this.type = type;
+        if (TechnicalSpecialist.validateVehicleType(type)) {
+            this.type = type;
+        } else {
+            this.type = new VehicleType("default", 0);
+        }
     }
 
     public CarColor getColor() {
@@ -86,7 +90,11 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     public void setColor(CarColor color) {
-        this.color = color;
+        if (TechnicalSpecialist.validateColor(color)) {
+            this.color = color;
+        } else {
+            this.color = CarColor.WHITE;
+        }
     }
 
     public String getModel() {
@@ -94,7 +102,11 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     public void setModel(String model) {
-        this.model = model;
+        if (TechnicalSpecialist.validateModelName(model)) {
+            this.model = model;
+        } else {
+            this.model = "DEFAULT";
+        }
     }
 
     public String getRegistrationNumber() {
@@ -102,7 +114,11 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     public void setRegistrationNumber(String registrationNumber) {
-        this.registrationNumber = registrationNumber;
+        if (TechnicalSpecialist.validateRegistrationNumber(registrationNumber)) {
+            this.registrationNumber = registrationNumber;
+        } else {
+            this.registrationNumber = "DEFAULT";
+        }
     }
 
     public double getMass() {
@@ -110,7 +126,11 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     public void setMass(double mass) {
-        this.mass = mass;
+        if (TechnicalSpecialist.validateWeight(mass)) {
+            this.mass = mass;
+        } else {
+            this.mass = 0.0;
+        }
     }
 
     public int getMileage() {
@@ -118,7 +138,11 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     public void setMileage(int mileage) {
-        this.mileage = mileage;
+        if (TechnicalSpecialist.validateMileage(mileage)) {
+            this.mileage = mileage;
+        } else {
+            this.mileage = 0;
+        }
     }
 
     public int getManufactureYear() {
@@ -126,6 +150,10 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     public void setManufactureYear(int manufactureYear) {
-        this.manufactureYear = manufactureYear;
+        if (TechnicalSpecialist.validateManufactureYear(manufactureYear)) {
+            this.manufactureYear = manufactureYear;
+        } else {
+            this.manufactureYear = 0;
+        }
     }
 }
