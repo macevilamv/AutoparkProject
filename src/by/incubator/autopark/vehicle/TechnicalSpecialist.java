@@ -1,10 +1,9 @@
-package by.incubator.autopark;
+package by.incubator.autopark.vehicle;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TechnicalSpecialist {
-
     public static final int LOWER_LIMIT_MANUFACTURE_YEAR = 1886;
 
     public static boolean validateManufactureYear(int year) {
@@ -36,7 +35,6 @@ public class TechnicalSpecialist {
         if (number == null) {
             return false;
         }
-
         Pattern pattern = Pattern.compile("\\d{4}\\s[A-Z]{2}-[0-7]");
         Matcher matcher = pattern.matcher(number);
 
@@ -46,4 +44,24 @@ public class TechnicalSpecialist {
     public static boolean validateModelName(String name) {
         return (name != null && !(name.isEmpty()));
     }
+
+    public static boolean validateEngineVolume(double volume) {
+        return volume >= 0;
+    }
+    public static boolean validateFuelTankCapacity(double capacity) {
+        return capacity >= 0;
+    }
+
+    public static boolean validateFuelConsumption(double consumption) {
+        return consumption >= 0;
+    }
+
+    public static boolean validateBatterySize(double size) {
+        return size >= 0;
+    }
+
+    public static boolean validateElectricityConsumption(double consumption) {
+        return consumption >= 0;
+    }
 }
+

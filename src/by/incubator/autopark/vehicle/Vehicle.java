@@ -1,6 +1,7 @@
-package by.incubator.autopark;
+package by.incubator.autopark.vehicle;
 
 import java.util.Objects;
+import by.incubator.autopark.engine.*;
 
 public class Vehicle implements Comparable<Vehicle> {
     private VehicleType type;
@@ -10,6 +11,7 @@ public class Vehicle implements Comparable<Vehicle> {
     private double mass;
     private int mileage;
     private int manufactureYear;
+    private Startable engine;
 
     public Vehicle() {
         type = new VehicleType("DEFAULT", 0);
@@ -19,10 +21,11 @@ public class Vehicle implements Comparable<Vehicle> {
         color = CarColor.WHITE;
         registrationNumber = "DEFAULT";
         mass = 0.0;
+        engine = null;
     }
 
     public Vehicle(VehicleType type, CarColor color, String model, String registrationNumber, double mass,
-                   int mileage, int manufactureYear) {
+                   int mileage, int manufactureYear, Startable engine) {
         setType(type);
         setColor(color);
         setModel(model);
@@ -30,10 +33,12 @@ public class Vehicle implements Comparable<Vehicle> {
         setMass(mass);
         setMileage(mileage);
         setManufactureYear(manufactureYear);
+        setEngine(engine);
     }
 
-    public double getCalcTaxPerMonth() {
-        return (this.mass * 0.0013) + (type.getTaxCoefficient() * 30) + 5;
+    public String getCalcTaxPerMonth() {
+        return String.format("%.2f",
+                (this.mass * 0.0013) + (type.getTaxCoefficient() * engine.getTaxPerMonth() * 30) + 5);
     }
 
     @Override
@@ -45,7 +50,8 @@ public class Vehicle implements Comparable<Vehicle> {
                 + mass + ", "
                 + mileage + ", "
                 + manufactureYear + ", "
-                + getCalcTaxPerMonth();
+                + getCalcTaxPerMonth() + ", "
+                + engine.toString();
     }
 
     @Override
@@ -71,6 +77,14 @@ public class Vehicle implements Comparable<Vehicle> {
         } else {
             return -1;
         }
+    }
+
+    public Startable getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Startable engine) {
+        this.engine = engine;
     }
 
     public VehicleType getType() {
