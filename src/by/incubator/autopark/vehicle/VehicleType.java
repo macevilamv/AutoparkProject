@@ -1,4 +1,4 @@
-package by.incubator.autopark;
+package by.incubator.autopark.vehicle;
 
 import java.util.Objects;
 
@@ -8,7 +8,7 @@ public class VehicleType {
 
     VehicleType () {}
 
-    VehicleType (String name, double taxation) {
+    public VehicleType (String name, double taxation) {
         this.typeName = name;
         this.taxCoefficient = taxation;
     }
