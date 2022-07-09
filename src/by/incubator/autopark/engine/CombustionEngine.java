@@ -1,5 +1,6 @@
 package by.incubator.autopark.engine;
 
+import by.incubator.autopark.exceptions.NotVehicleException;
 import by.incubator.autopark.vehicle.TechnicalSpecialist;
 
 public class CombustionEngine extends AbstractEngine {
@@ -30,10 +31,14 @@ public class CombustionEngine extends AbstractEngine {
     }
 
     public void setEngineVolume(double engineVolume) {
-        if (TechnicalSpecialist.validateEngineVolume(engineVolume)) {
-            this.engineVolume = engineVolume;
-        } else {
-            this.engineVolume = 0.0d;
+        try {
+            if (TechnicalSpecialist.validateEngineVolume(engineVolume)) {
+                this.engineVolume = engineVolume;
+            } else {
+                throw new NotVehicleException("Incorrect engine volume: " + engineVolume);
+            }
+        } catch (NotVehicleException e) {
+            e.printStackTrace();
         }
     }
 
@@ -42,10 +47,14 @@ public class CombustionEngine extends AbstractEngine {
     }
 
     public void setFuelTankCapacity(double fuelTankCapacity) {
-        if (TechnicalSpecialist.validateFuelTankCapacity(fuelTankCapacity)) {
-            this.fuelTankCapacity = fuelTankCapacity;
-        } else {
-            this.fuelTankCapacity = 0.0d;
+        try {
+            if (TechnicalSpecialist.validateFuelTankCapacity(fuelTankCapacity)) {
+                this.fuelTankCapacity = fuelTankCapacity;
+            } else {
+                throw new NotVehicleException("Incorrect fuel tank capacity: " + fuelTankCapacity);
+            }
+        } catch (NotVehicleException e) {
+            e.printStackTrace();
         }
     }
 
@@ -54,10 +63,14 @@ public class CombustionEngine extends AbstractEngine {
     }
 
     public void setFuelConsumptionPer100(double fuelConsumptionPer100) {
-        if (TechnicalSpecialist.validateFuelConsumption(fuelConsumptionPer100)) {
-            this.fuelConsumptionPer100 = fuelConsumptionPer100;
-        } else {
-            this.fuelConsumptionPer100 = 0.0d;
+        try {
+            if (TechnicalSpecialist.validateFuelConsumption(fuelConsumptionPer100)) {
+                this.fuelConsumptionPer100 = fuelConsumptionPer100;
+            } else {
+                throw new NotVehicleException("Incorrect fuel consumption: " + fuelConsumptionPer100);
+            }
+        } catch (NotVehicleException e) {
+            e.printStackTrace();
         }
     }
 
