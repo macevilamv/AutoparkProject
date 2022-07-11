@@ -1,5 +1,6 @@
 package by.incubator.autopark.engine;
 
+import by.incubator.autopark.exceptions.NotVehicleException;
 import by.incubator.autopark.vehicle.TechnicalSpecialist;
 
 public class ElectricalEngine extends AbstractEngine {
@@ -27,10 +28,14 @@ public class ElectricalEngine extends AbstractEngine {
     }
 
     public void setBatterySize(double batterySize) {
-        if (TechnicalSpecialist.validateBatterySize(batterySize)) {
-            this.batterySize = batterySize;
-        } else {
-            this.batterySize = 0.0d;
+        try {
+            if (TechnicalSpecialist.validateBatterySize(batterySize)) {
+                this.batterySize = batterySize;
+            } else {
+                throw new NotVehicleException("Incorrect battery size: " + batterySize);
+            }
+        } catch (NotVehicleException e) {
+            e.printStackTrace();
         }
     }
 
@@ -39,10 +44,14 @@ public class ElectricalEngine extends AbstractEngine {
     }
 
     public void setElectricityConsumption(double electricityConsumption) {
-        if (TechnicalSpecialist.validateElectricityConsumption(electricityConsumption)) {
-            this.electricityConsumption = electricityConsumption;
-        } else {
-            this.electricityConsumption = 0.0d;
+        try {
+            if (TechnicalSpecialist.validateElectricityConsumption(electricityConsumption)) {
+                this.electricityConsumption = electricityConsumption;
+            } else {
+                throw new NotVehicleException("Incorrect electricity consumption: " + electricityConsumption);
+            }
+        } catch (NotVehicleException e) {
+            e.printStackTrace();
         }
     }
 
