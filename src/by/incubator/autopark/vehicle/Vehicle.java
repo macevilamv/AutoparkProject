@@ -1,8 +1,12 @@
 package by.incubator.autopark.vehicle;
 
+import java.util.List;
 import java.util.Objects;
+
 import by.incubator.autopark.exceptions.NotVehicleException;
 import by.incubator.autopark.engine.*;
+import by.incubator.autopark.rent.Rent;
+
 import static by.incubator.autopark.vehicle.TechnicalSpecialist.*;
 
 public class Vehicle implements Comparable<Vehicle> {
@@ -14,9 +18,12 @@ public class Vehicle implements Comparable<Vehicle> {
     private int mileage;
     private int manufactureYear;
     private Startable engine;
+    private int id;
+
+    private List<Rent> rentList;
 
     public Vehicle() {
-        type = new VehicleType("DEFAULT", 0);
+        type = new VehicleType(0, "DEFAULT", 0.0d);
         model = "DEFAULT";
         registrationNumber = "DEFAULT";
         manufactureYear = 0;
@@ -24,31 +31,79 @@ public class Vehicle implements Comparable<Vehicle> {
         registrationNumber = "DEFAULT";
         mass = 0.0;
         engine = null;
+        id = 0;
     }
 
-    public Vehicle(VehicleType type, CarColor color,
+    public Vehicle(int id, VehicleType type, CarColor color,
                    String model, String registrationNumber,
                    double mass, int mileage,
-                   int manufactureYear, Startable engine) {
-        setType(type);
-        setColor(color);
-        setModel(model);
-        setRegistrationNumber(registrationNumber);
-        setMass(mass);
-        setMileage(mileage);
-        setManufactureYear(manufactureYear);
-        setEngine(engine);
+                   int manufactureYear, Startable engine, List<Rent> rentList) {
+        try {
+            if (validateVehicleType(type)) {
+                this.type = type;
+            } else {
+                throw new NotVehicleException("Incorrect vehicle type: " + type);
+            }
+            if (validateColor(color)) {
+                this.color = color;
+            } else {
+                throw new NotVehicleException("Incorrect color: " + color);
+            }
+            if (validateModelName(model)) {
+                this.model = model;
+            } else {
+                throw new NotVehicleException("Incorrect model: " + model);
+            }
+            if (validateRegistrationNumber(registrationNumber)) {
+                this.registrationNumber = registrationNumber;
+            } else {
+                throw new NotVehicleException("Incorrect registration number: " + registrationNumber);
+            }
+            if (validateWeight(mass)) {
+                this.mass = mass;
+            } else {
+                throw new NotVehicleException("Incorrect weight: " + mass);
+            }
+            if (validateMileage(mileage)) {
+                this.mileage = mileage;
+            } else {
+                throw new NotVehicleException("Incorrect mileage: " + mileage);
+            }
+            if (validateManufactureYear(manufactureYear)) {
+                this.manufactureYear = manufactureYear;
+            } else {
+                throw new NotVehicleException("Incorrect manufacture year: " + manufactureYear);
+            }
+        } catch (NotVehicleException e) {
+            e.printStackTrace();
+        }
+        this.id = id;
+        this.engine = engine;
+        this.rentList = rentList;
     }
 
+    public double getTotalProfit() {
+        return Double.parseDouble(String.format("%.2f",getTotalIncome() - getCalcTaxPerMonth()));
+    }
 
-    public String getCalcTaxPerMonth() {
-        return String.format("%.2f",
-                (this.mass * 0.0013) + (type.getTaxCoefficient() * engine.getTaxPerMonth() * 30) + 5);
+    public double getCalcTaxPerMonth() {
+        return Double.parseDouble(String.format("%.2f",
+                (this.mass * 0.0013) + (type.getTaxCoefficient() * engine.getTaxPerMonth() * 30) + 5));
+    }
+
+    public double getTotalIncome() {
+        double sum = 0.0d;
+
+        for (Rent rent : rentList) {
+            sum += rent.getRentCost();
+        }
+        return sum;
     }
 
     @Override
     public String toString() {
-        return type.getTypeName() + ", "
+        return  id + ", "
+                + type.getTypeName() + ", "
                 + model + ", "
                 + color + ", "
                 + registrationNumber + ", "
@@ -95,6 +150,15 @@ public class Vehicle implements Comparable<Vehicle> {
     public VehicleType getType() {
         return type;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 
     public void setType(VehicleType type) {
         try {
