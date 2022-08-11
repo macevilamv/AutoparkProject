@@ -1,18 +1,20 @@
 package by.incubator.autopark;
 
 import by.incubator.autopark.collections.VehicleCollection;
-import by.incubator.autopark.engine.*;
-import by.incubator.autopark.rent.Rent;
 import by.incubator.autopark.vehicle.*;
-
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         VehicleCollection vehicleCollection = new VehicleCollection("types.csv", "vehicles.csv", "rents.csv");
-
+        vehicleCollection.display();
+        System.out.println();
+        vehicleCollection.insert(-1, new Vehicle());
+        vehicleCollection.delete(1);
+        vehicleCollection.delete(4);
+        vehicleCollection.display();
+        System.out.println();
+        vehicleCollection.sort();
         vehicleCollection.display();
     }
 

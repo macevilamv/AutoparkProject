@@ -1,5 +1,6 @@
 package by.incubator.autopark.vehicle;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,7 +20,6 @@ public class Vehicle implements Comparable<Vehicle> {
     private int manufactureYear;
     private Startable engine;
     private int id;
-
     private List<Rent> rentList;
 
     public Vehicle() {
@@ -30,8 +30,9 @@ public class Vehicle implements Comparable<Vehicle> {
         color = CarColor.WHITE;
         registrationNumber = "DEFAULT";
         mass = 0.0;
-        engine = null;
+        engine = new CombustionEngine("DEFAULT", 0, 0, 0, 0);
         id = 0;
+        rentList = new ArrayList<>();
     }
 
     public Vehicle(int id, VehicleType type, CarColor color,
@@ -87,6 +88,9 @@ public class Vehicle implements Comparable<Vehicle> {
     }
 
     public double getCalcTaxPerMonth() {
+        if (this.model.equals("DEFAULT") && this.registrationNumber.equals("DEFAULT"))
+            return 0;
+
         return Double.parseDouble(String.format("%.2f",
                 (this.mass * 0.0013) + (type.getTaxCoefficient() * engine.getTaxPerMonth() * 30) + 5));
     }
