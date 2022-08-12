@@ -87,7 +87,6 @@ public class VehicleCollection {
                 + " %" + columnsLengths.get(FieldsToRender.Tax.name()) + "s | "
                 + " %" + columnsLengths.get(FieldsToRender.Profit.name()) + "s | \n";
 
-
         System.out.printf(pattern, FieldsToRender.ID.name(), FieldsToRender.Type.name(),
                                    FieldsToRender.Model.name(), FieldsToRender.Number.name(),
                                    FieldsToRender.Weight.name(), FieldsToRender.Year.name(),
@@ -96,7 +95,6 @@ public class VehicleCollection {
                                    FieldsToRender.Profit.name());
 
         for (Vehicle vehicle : this.vehicles) {
-
             System.out.printf(pattern,
                     vehicle.getId(), vehicle.getType().getTypeName(), vehicle.getModel(),
                     vehicle.getRegistrationNumber(), vehicle.getMass(), vehicle.getManufactureYear(),
