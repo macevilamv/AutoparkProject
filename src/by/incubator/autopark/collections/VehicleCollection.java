@@ -18,16 +18,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class VehicleCollection {
-    List<VehicleType> types;
-    List<Vehicle> vehicles;
-    List<Rent> rents;
+    private List<VehicleType> types;
+    private List<Vehicle> vehicles;
+    private List<Rent> rents;
+    private static String csvConfigPath = "resources/csv/csv-config.properties";
     private static final Map<String, Integer> config = new HashMap<>();
 
     static {
         try {
-            initProperties("src/by/incubator/autopark/collections/csvParsingProperties/csv-config.properties");
+            initProperties(csvConfigPath);
         } catch (IOException e) {
-            throw new RuntimeException("Error: \"csv-config.properties\" file reading has failed.");
+            throw new RuntimeException("Error: \"csv-config.properties\" file reading has failed.", e);
         }
     }
 
@@ -37,7 +38,7 @@ public class VehicleCollection {
             this.rents = loadRents(rents);
             this.vehicles = loadVehicles(vehicles);
         } catch (IOException | ParseException e) {
-            throw new IllegalArgumentException("Error: incorrect path to .csv file.");
+            throw new IllegalArgumentException("Error: incorrect path to .csv file.", e);
         }
     }
 
@@ -68,101 +69,34 @@ public class VehicleCollection {
     }
 
     public void display() {
-        int maxIdLength = 0;
-        int maxTypeLength = 0;
-        int maxModelLength = 0;
-        int maxColorLength = 0;
-        int maxWeightLength = 0;
-        int maxMileageLength = 0;
-        int maxNumberLength = 0;
-        int maxTaxLength = 0;
-        int maxYearLength = 0;
-        int maxIncomeLength = 0;
-        int maxProfitLength = 0;
+        Map <String, Integer> columnsLengths = new HashMap<>();
+        FieldsToRender [] fields = FieldsToRender.values();
         String pattern;
 
-        for (Vehicle vehicle : this.vehicles) {
-            if (maxIdLength < ((Object) vehicle.getId()).toString().length()) {
-                maxIdLength = ((Object) vehicle.getId()).toString().length();
+        getColumnsLengthData(columnsLengths, fields);
 
-                if (maxIdLength < FieldsToRender.ID.name().length())
-                    maxIdLength = FieldsToRender.ID.name().length();
-            }
-
-            if (maxTypeLength < vehicle.getType().getTypeName().length()) {
-                maxTypeLength = vehicle.getType().getTypeName().length();
-
-                if (maxTypeLength < FieldsToRender.Type.name().length())
-                    maxTypeLength = FieldsToRender.Type.name().length();
-            }
-
-            if (maxModelLength < vehicle.getModel().length()) {
-                maxModelLength = vehicle.getModel().length();
-
-                if (maxModelLength < FieldsToRender.Model.name().length())
-                    maxModelLength = FieldsToRender.Model.name().length();
-            }
+        pattern = "| %" + columnsLengths.get(FieldsToRender.ID.name()) + "s |"
+                + " %" + columnsLengths.get(FieldsToRender.Type.name()) + "s |"
+                + " %" + columnsLengths.get(FieldsToRender.Model.name()) + "s |"
+                + " %" + columnsLengths.get(FieldsToRender.Number.name()) + "s |"
+                + " %" + columnsLengths.get(FieldsToRender.Weight.name()) + "s |"
+                + " %" + columnsLengths.get(FieldsToRender.Year.name()) + "s |"
+                + " %" + columnsLengths.get(FieldsToRender.Mileage.name()) + "s |"
+                + " %" + columnsLengths.get(FieldsToRender.Color.name()) + "s | "
+                + " %" + columnsLengths.get(FieldsToRender.Income.name()) + "s |"
+                + " %" + columnsLengths.get(FieldsToRender.Tax.name()) + "s | "
+                + " %" + columnsLengths.get(FieldsToRender.Profit.name()) + "s | \n";
 
 
-            if (maxColorLength < vehicle.getColor().name().length()) {
-                maxColorLength = vehicle.getColor().name().length();
-
-                if (maxColorLength < FieldsToRender.Color.name().length())
-                    maxColorLength = FieldsToRender.Color.name().length();
-            }
-
-            if (maxWeightLength < ((Object) vehicle.getMass()).toString().length()) {
-                maxWeightLength = ((Object) vehicle.getMass()).toString().length();
-
-                if (maxWeightLength < FieldsToRender.Weight.name().length())
-                    maxWeightLength = FieldsToRender.Weight.name().length();
-            }
-            if (maxMileageLength < ((Object) vehicle.getMileage()).toString().length()) {
-                maxMileageLength = ((Object) vehicle.getMileage()).toString().length();
-
-                if (maxMileageLength < FieldsToRender.Mileage.name().length())
-                    maxMileageLength = FieldsToRender.Mileage.name().length();
-            }
-            if (maxNumberLength < vehicle.getRegistrationNumber().length()) {
-                maxNumberLength = vehicle.getRegistrationNumber().length();
-            }
-            if (maxTaxLength < ((Object) vehicle.getCalcTaxPerMonth()).toString().length()) {
-                maxTaxLength = ((Object) vehicle.getCalcTaxPerMonth()).toString().length();
-
-                if (maxTaxLength < FieldsToRender.Tax.name().length())
-                    maxTaxLength = FieldsToRender.Tax.name().length();
-            }
-            if (maxYearLength < ((Object) vehicle.getManufactureYear()).toString().length()) {
-                maxYearLength = ((Object) vehicle.getManufactureYear()).toString().length();
-            }
-
-            if (maxIncomeLength < ((Object) vehicle.getTotalIncome()).toString().length()) {
-                maxIncomeLength = ((Object) vehicle.getTotalIncome()).toString().length();
-
-                if (maxIncomeLength < FieldsToRender.Income.name().length())
-                    maxIncomeLength = FieldsToRender.Income.name().length();
-            }
-
-            if (maxProfitLength < ((Object) vehicle.getTotalProfit()).toString().length()) {
-                maxProfitLength = ((Object) vehicle.getTotalProfit()).toString().length();
-
-                if (maxIncomeLength < FieldsToRender.Profit.name().length())
-                    maxIncomeLength = FieldsToRender.Profit.name().length();
-            }
-        }
-
-        pattern = "| %" + maxIdLength + "s | %" + maxTypeLength + "s | %" + maxModelLength + "s" +
-                " | %" + maxNumberLength + "s | %" + maxWeightLength + "s | %" + maxYearLength + "s | %"
-                + maxMileageLength + "s | %" + maxColorLength + "s | %" + maxIncomeLength + "s | %"
-                + maxTaxLength + "s | %" + maxProfitLength + "s | \n";
-
-        System.out.printf(pattern,
-                FieldsToRender.ID, FieldsToRender.Type, FieldsToRender.Model, FieldsToRender.Number,
-                FieldsToRender.Weight, FieldsToRender.Year, FieldsToRender.Mileage,
-                FieldsToRender.Color, FieldsToRender.Income, FieldsToRender.Tax, FieldsToRender.Profit
-        );
+        System.out.printf(pattern, FieldsToRender.ID.name(), FieldsToRender.Type.name(),
+                                   FieldsToRender.Model.name(), FieldsToRender.Number.name(),
+                                   FieldsToRender.Weight.name(), FieldsToRender.Year.name(),
+                                   FieldsToRender.Mileage.name(), FieldsToRender.Color.name(),
+                                   FieldsToRender.Income.name(), FieldsToRender.Tax.name(),
+                                   FieldsToRender.Profit.name());
 
         for (Vehicle vehicle : this.vehicles) {
+
             System.out.printf(pattern,
                     vehicle.getId(), vehicle.getType().getTypeName(), vehicle.getModel(),
                     vehicle.getRegistrationNumber(), vehicle.getMass(), vehicle.getManufactureYear(),
@@ -174,6 +108,37 @@ public class VehicleCollection {
 
     public void sort() {
         Collections.sort(this.vehicles, new VehicleModelComparator());
+    }
+
+    private void getColumnsLengthData(Map<String, Integer> columnsLengths, FieldsToRender[] fields) {
+        for (FieldsToRender field : fields) {
+            columnsLengths.put(field.name(), field.name().length());
+        }
+
+        for (Vehicle vehicle : this.vehicles) {
+            columnsLengths.computeIfPresent(FieldsToRender.ID.name(),
+                    (key, oldValue) -> Integer.max(oldValue, vehicle.getId()));
+            columnsLengths.computeIfPresent(FieldsToRender.Type.name(),
+                    (key, oldValue) -> Integer.max(oldValue, vehicle.getType().getTypeName().length()));
+            columnsLengths.computeIfPresent(FieldsToRender.Model.name(),
+                    (key, oldValue) -> Integer.max(oldValue, vehicle.getModel().length()));
+            columnsLengths.computeIfPresent(FieldsToRender.Color.name(),
+                    (key, oldValue) -> Integer.max(oldValue, vehicle.getColor().name().length()));
+            columnsLengths.computeIfPresent(FieldsToRender.Profit.name(),
+                    (key, oldValue) -> Integer.max(oldValue, ((Object) vehicle.getTotalProfit()).toString().length()));
+            columnsLengths.computeIfPresent(FieldsToRender.Weight.name(),
+                    (key, oldValue) -> Integer.max(oldValue, ((Object) vehicle.getMass()).toString().length()));
+            columnsLengths.computeIfPresent(FieldsToRender.Mileage.name(),
+                    (key, oldValue) -> Integer.max(oldValue, ((Object) vehicle.getMileage()).toString().length()));
+            columnsLengths.computeIfPresent(FieldsToRender.Number.name(),
+                    (key, oldValue) -> Integer.max(oldValue, vehicle.getRegistrationNumber().length()));
+            columnsLengths.computeIfPresent(FieldsToRender.Income.name(),
+                    (key, oldValue) -> Integer.max(oldValue, ((Object) vehicle.getTotalIncome()).toString().length()));
+            columnsLengths.computeIfPresent(FieldsToRender.Year.name(),
+                    (key, oldValue) -> Integer.max(oldValue, ((Object) vehicle.getManufactureYear()).toString().length()));
+            columnsLengths.computeIfPresent(FieldsToRender.Tax.name(),
+                    (key, oldValue) -> Integer.max(oldValue, ((Object) vehicle.getCalcTaxPerMonth()).toString().length()));
+        }
     }
 
     private static List<VehicleType> loadTypes(String inFile) throws IOException {
