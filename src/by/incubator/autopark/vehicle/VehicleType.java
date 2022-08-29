@@ -3,14 +3,25 @@ package by.incubator.autopark.vehicle;
 import java.util.Objects;
 
 public class VehicleType {
+    private int id;
     private String typeName;
     private double taxCoefficient;
 
     VehicleType () {}
 
-    public VehicleType (String name, double taxation) {
+
+    public VehicleType (int id, String name, double taxation) {
+        this.id = id;
         this.typeName = name;
         this.taxCoefficient = taxation;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTypeName() {

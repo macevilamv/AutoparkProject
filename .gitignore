@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 /.idea/
-/.out/
+/out/
 *.txt
 *.iml
 
