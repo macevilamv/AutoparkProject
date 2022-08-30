@@ -30,7 +30,6 @@ public class MyQueue<T> {
         if (size <= 0)
             throw new RuntimeException("Error! Attempt to remove element from empty queue.",
                     new NoSuchElementException());
-
         Object content = buffer[0];
         size--;
         buffer = trimBuffer();
