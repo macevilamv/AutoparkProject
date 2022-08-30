@@ -1,10 +1,5 @@
 package by.incubator.autopark.collections;
 
-
-<<<<<<< HEAD
-import java.util.ArrayDeque;
-=======
->>>>>>> 9545039ebe07ee35b0b7ebcca3019fd2ef0d5720
 import java.util.NoSuchElementException;
 
 public class MyQueue<T> {
@@ -34,11 +29,7 @@ public class MyQueue<T> {
     public Object dequeue() {
         if (size <= 0)
             throw new RuntimeException("Error! Attempt to remove element from empty queue.",
-<<<<<<< HEAD
                     new NoSuchElementException());
-=======
-                    new ArrayIndexOutOfBoundsException());
->>>>>>> 9545039ebe07ee35b0b7ebcca3019fd2ef0d5720
 
         Object content = buffer[0];
         size--;
@@ -67,17 +58,9 @@ public class MyQueue<T> {
 
     private Object[] expandBuffer() {
         Object[] expandedBuffer = new Object[(int) (size + (size * 0.25))];
-<<<<<<< HEAD
         this.capacity = (int) (size + (size * 0.25));
-=======
->>>>>>> 9545039ebe07ee35b0b7ebcca3019fd2ef0d5720
         System.arraycopy(buffer, 0, expandedBuffer, 0, size);
 
         return expandedBuffer;
     }
 }
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 9545039ebe07ee35b0b7ebcca3019fd2ef0d5720
