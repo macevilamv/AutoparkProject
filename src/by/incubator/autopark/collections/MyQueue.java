@@ -26,15 +26,15 @@ public class MyQueue<T> {
         }
     }
 
-    public Object dequeue() {
+    public T dequeue() {
         if (size <= 0)
-            throw new RuntimeException("Error! Attempt to remove element from empty queue.",
-                    new NoSuchElementException());
+            throw  new NoSuchElementException("Error! Attempt to remove element from empty queue.");
+
         Object content = buffer[0];
         size--;
         buffer = trimBuffer();
 
-        return content;
+        return (T) content;
     }
 
     public Object peek() {
