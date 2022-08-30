@@ -1,6 +1,7 @@
 package by.incubator.autopark.collections;
 
 
+import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 
 public class MyQueue<T> {
@@ -30,7 +31,7 @@ public class MyQueue<T> {
     public Object dequeue() {
         if (size <= 0)
             throw new RuntimeException("Error! Attempt to remove element from empty queue.",
-                    new ArrayIndexOutOfBoundsException());
+                    new NoSuchElementException());
 
         Object content = buffer[0];
         size--;
@@ -65,3 +66,5 @@ public class MyQueue<T> {
         return expandedBuffer;
     }
 }
+
+
