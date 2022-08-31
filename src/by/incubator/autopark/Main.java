@@ -1,21 +1,26 @@
 package by.incubator.autopark;
 
+import by.incubator.autopark.collections.MyQueue;
 import by.incubator.autopark.collections.VehicleCollection;
+import by.incubator.autopark.service.CarWash;
 import by.incubator.autopark.vehicle.*;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        VehicleCollection vehicleCollection = new VehicleCollection("types.csv", "vehicles.csv", "rents.csv");
-        vehicleCollection.display();
-        System.out.println();
-        vehicleCollection.insert(-1, new Vehicle());
-        vehicleCollection.delete(1);
-        vehicleCollection.delete(4);
-        vehicleCollection.display();
-        System.out.println();
-        vehicleCollection.sort();
-        vehicleCollection.display();
+        Vehicle [] vehicles = initVehicleArray(10);
+
+        CarWash.launchCarWash(vehicles);
+    }
+
+    private static Vehicle[] initVehicleArray(int size) {
+        Vehicle [] vehicles = new Vehicle[size];
+
+        for (int i = 0; i < size; i++) {
+            vehicles[i] = new Vehicle();
+        }
+
+        return vehicles;
     }
 
     private static class VehicleUtil {

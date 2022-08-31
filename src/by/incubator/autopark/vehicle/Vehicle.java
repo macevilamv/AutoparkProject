@@ -20,11 +20,12 @@ public class Vehicle implements Comparable<Vehicle> {
     private int manufactureYear;
     private Startable engine;
     private int id;
+    private static int defaultCarCounter;
     private List<Rent> rentList;
 
     public Vehicle() {
         type = new VehicleType(0, "DEFAULT", 0.0d);
-        model = "DEFAULT";
+        model = "DEFAULT" + defaultCarCounter++;
         registrationNumber = "DEFAULT";
         manufactureYear = 0;
         color = CarColor.WHITE;
