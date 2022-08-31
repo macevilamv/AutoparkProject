@@ -28,7 +28,7 @@ public class MyQueue<T> {
 
     public T dequeue() {
         if (size <= 0)
-            throw  new NoSuchElementException("Error! Attempt to remove element from empty queue.");
+            throw new NoSuchElementException("Error! Attempt to remove element from empty queue.");
 
         Object content = buffer[0];
         size--;
