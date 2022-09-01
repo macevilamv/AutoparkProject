@@ -3,14 +3,22 @@ package by.incubator.autopark;
 import by.incubator.autopark.collections.MyQueue;
 import by.incubator.autopark.collections.VehicleCollection;
 import by.incubator.autopark.service.CarWash;
+import by.incubator.autopark.service.Garage;
 import by.incubator.autopark.vehicle.*;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        Vehicle [] vehicles = initVehicleArray(10);
+        int vehicleNum = 15;
+        Vehicle [] vehicles = initVehicleArray(vehicleNum);
+        Garage garage = new Garage(vehicleNum);
 
-        CarWash.launchCarWash(vehicles);
+        for (Vehicle vehicle : vehicles) {
+            garage.pullInto(vehicle);
+        }
+        for (int i = 0; i < vehicleNum + 1; i++) {
+            garage.pullOut();
+        }
     }
 
     private static Vehicle[] initVehicleArray(int size) {
