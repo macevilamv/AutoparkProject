@@ -13,6 +13,7 @@ public interface Fixer {
 
     default boolean detectAndRepair(Vehicle vehicle) {
         detectBreaking(vehicle);
+        
         if (isBroken(vehicle)) {
             repair(vehicle);
             return true;
