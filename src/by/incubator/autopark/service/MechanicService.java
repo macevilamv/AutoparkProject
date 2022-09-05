@@ -55,7 +55,7 @@ public class MechanicService implements Fixer {
 
         for (int i = 0; i < defectsNumber; i++) {
             defect = DETAILS[(int) (Math.random() * DETAILS.length)];
-            defectsStatistics.put(defect, defectsStatistics.get(defect) + 1);
+            defectsStatistics.computeIfPresent(defect, (key, oldValue) -> oldValue + 1);
         }
     }
 
