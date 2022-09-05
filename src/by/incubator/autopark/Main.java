@@ -2,31 +2,47 @@ package by.incubator.autopark;
 
 import by.incubator.autopark.collections.MyQueue;
 import by.incubator.autopark.collections.VehicleCollection;
+import by.incubator.autopark.engine.DieselEngine;
 import by.incubator.autopark.service.CarWash;
 import by.incubator.autopark.service.Garage;
+import by.incubator.autopark.service.MechanicService;
 import by.incubator.autopark.vehicle.*;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        int vehicleNum = 15;
-        Vehicle [] vehicles = initVehicleArray(vehicleNum);
-        Garage garage = new Garage(vehicleNum);
+        Vehicle [] vehicles = initVehicleArray();
+        MechanicService mechanicService = new MechanicService();
 
         for (Vehicle vehicle : vehicles) {
-            garage.pullInto(vehicle);
+            mechanicService.detectBreaking(vehicle);
         }
-        for (int i = 0; i < vehicleNum + 1; i++) {
-            garage.pullOut();
+        for (Vehicle vehicle : vehicles) {
+            mechanicService.repair(vehicle);
         }
     }
 
-    private static Vehicle[] initVehicleArray(int size) {
-        Vehicle [] vehicles = new Vehicle[size];
-
-        for (int i = 0; i < size; i++) {
-            vehicles[i] = new Vehicle();
-        }
+    private static Vehicle[] initVehicleArray() {
+        Vehicle [] vehicles = {
+                new Vehicle (1,
+                        new VehicleType(0, "Car", 1.3d),
+                        CarColor.BLACK, "Volvo XC90", "5427 AX-7", 2323d, 123132,
+                        1998,
+                        new DieselEngine(2.4d, 9, 100),
+                        new ArrayList<>()),
+                new Vehicle (2,
+                        new VehicleType(0, "Car", 1.3d),
+                        CarColor.BLACK, "Audi A6 C5", "5347 AX-7", 2323d, 123132,
+                        1998,
+                        new DieselEngine(1.9d, 8, 100),
+                        new ArrayList<>()),
+                new Vehicle (3,
+                        new VehicleType(0, "Car", 1.3d),
+                        CarColor.BLACK, "Renault Megane III", "5127 AX-7", 2323d, 123132,
+                        1998,
+                        new DieselEngine(1.5d, 23, 100),
+                        new ArrayList<>())
+        };
 
         return vehicles;
     }
