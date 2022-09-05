@@ -94,7 +94,7 @@ public class MechanicService implements Fixer {
         return buffer;
     }
 
-    private static String getLine (Map<String, Integer> defectsStatistics, Vehicle vehicle) {
+    private static String getLine(Map<String, Integer> defectsStatistics, Vehicle vehicle) {
         String line = String.valueOf(vehicle.getId());
 
         for (Map.Entry<String, Integer> entry:
