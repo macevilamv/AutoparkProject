@@ -1,25 +1,47 @@
 package by.incubator.autopark;
 
-import by.incubator.autopark.collections.MyQueue;
 import by.incubator.autopark.collections.VehicleCollection;
 import by.incubator.autopark.engine.DieselEngine;
+import by.incubator.autopark.rent.Rent;
 import by.incubator.autopark.service.CarWash;
 import by.incubator.autopark.service.Garage;
 import by.incubator.autopark.service.MechanicService;
 import by.incubator.autopark.vehicle.*;
+
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Vehicle [] vehicles = initVehicleArray();
-        MechanicService mechanicService = new MechanicService();
+    private static final String VEHICLES_CSV = "vehicles.csv";
+    private static final String TYPES_CSV = "types.csv";
+    private static final String RENTS_CSV = "rents.csv";
 
-        for (Vehicle vehicle : vehicles) {
-            mechanicService.detectBreaking(vehicle);
-        }
-        for (Vehicle vehicle : vehicles) {
-            mechanicService.repair(vehicle);
-        }
+    public static void main(String[] args) throws IOException, ParseException {
+        VehicleCollection vehicleCollection = new VehicleCollection(TYPES_CSV, VEHICLES_CSV, RENTS_CSV);
+
+        List<VehicleType> vehicleTypes = vehicleCollection.loadTypes(TYPES_CSV);
+        List<Vehicle> vehicles = vehicleCollection.loadVehicles(VEHICLES_CSV);
+        List<Rent> rents = vehicleCollection.loadRents(RENTS_CSV);
+        MechanicService mechanicService = new MechanicService();
+        Garage garage = new Garage();
+
+        detectBreakages(vehicles, mechanicService);
+        repair(vehicles, mechanicService);
+        CarWash.launchCarWash(vehicles);
+        pullIntoGarage(vehicles, garage);
+    }
+
+    private static void pullIntoGarage(List<Vehicle> vehicles, Garage garage) {
+        vehicles.stream().forEach(garage::pullInto);
+    }
+
+    private static void repair(List<Vehicle> vehicles, MechanicService mechanicService) {
+        vehicles.stream().filter(car -> !mechanicService.isBroken(car)).forEach(mechanicService::repair);
+    }
+
+    private static void detectBreakages(List<Vehicle> vehicles, MechanicService mechanicService) {
+        vehicles.stream().forEach(mechanicService::detectBreaking);
     }
 
     private static Vehicle[] initVehicleArray() {

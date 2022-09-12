@@ -83,7 +83,7 @@ public class MechanicService implements Fixer {
         }
     }
 
-    private static List<String> readLineFromFile(String filePath) {
+    public static List<String> readLineFromFile(String filePath) {
         List<String> buffer = null;
 
         try {
