@@ -139,7 +139,7 @@ public class VehicleCollection {
         }
     }
 
-    private static List<VehicleType> loadTypes(String inFile) throws IOException {
+    public static List<VehicleType> loadTypes(String inFile) throws IOException {
         List<VehicleType> typesList = new ArrayList<>();
         String path = "resources/csv/" + inFile;
         File csvFile = new File(path);
@@ -151,7 +151,7 @@ public class VehicleCollection {
         return typesList;
     }
 
-    private static List<Rent> loadRents(String inFile) throws IOException, ParseException {
+    public static List<Rent> loadRents(String inFile) throws IOException, ParseException {
         List<Rent> rentList = new ArrayList<>();
         String path = "resources/csv/" + inFile;
         File csvFile = new File(path);
@@ -163,7 +163,7 @@ public class VehicleCollection {
         return rentList;
     }
 
-    private static List<Vehicle> loadVehicles(String inFile) throws IOException, ParseException {
+    public static List<Vehicle> loadVehicles(String inFile) throws IOException, ParseException {
         List<Vehicle> vehicleList = new ArrayList<>();
         String path = "resources/csv/" + inFile;
         File csvFile = new File(path);
